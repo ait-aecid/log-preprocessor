@@ -9,7 +9,7 @@ from aminer.parsing.MatchContext import MatchContext
 from aminer.input.LogAtom import LogAtom
 from aminer.parsing.ParserMatch import ParserMatch
 
-from utils import *
+from utils.utils import *
 
 class Parser:
     """Parser class for easy log parsing."""
