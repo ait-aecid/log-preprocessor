@@ -51,6 +51,7 @@ class Parser:
         if include_timestamps:
             if self.default_timestamp_paths is not None:
                 timestamps = [get_timestamp_from_decoded_match_dict(item, self.default_timestamp_paths) for item in match_dict_list_decoded]
+                print(self.default_timestamp_paths)
                 df["ts_str"] = timestamps
             else:
                 raise ValueError("Variable 'default_timestamp_paths' is not set.")

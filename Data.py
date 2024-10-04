@@ -15,6 +15,7 @@ class Data:
         parser_name: str,
         default_timestamp_paths: str,
         label_file_path: Optional[str] = None,
+        tpm_save_path="tmp/current_data.log"
         #data_file_paths: Optional[list] = None,
     ):
         self.data_dir = data_dir
@@ -23,21 +24,27 @@ class Data:
         self.parser_name = parser_name
         self.parser = Parser(parser_name, default_timestamp_paths)
         self.default_timestamp_paths = default_timestamp_paths
+        self.tpm_save_path = tpm_save_path
+        self.input_filepaths = self.get_input_filepaths(ordered=True)
 
     def get_labels(): #TO-DO
         return
     
-    def get_df(self, tpm_save_path="tmp/current_data.log") -> pd.DataFrame:
-        """Get the data as a single dataframe."""
-        # get file infos
+    def get_input_filepaths(self, ordered=False):
+        """Return input filespaths."""
         root, dirs, files = list(os.walk(self.data_dir))[0]
-        n_lines, start_timestamps = self.get_logfiles_info_from_dir()
-        files = list(dict(sorted(start_timestamps.items(), key=lambda x: x[1])).keys()) # sort files
+        if ordered:
+            n_lines, start_timestamps = self.get_logfiles_info_from_dir()
+            files = list(dict(sorted(start_timestamps.items(), key=lambda x: x[1])).keys()) # sort files
         self.input_filepaths = [os.path.join(self.data_dir, file) for file in files]
+        return self.input_filepaths
+    
+    def get_df(self) -> pd.DataFrame:
+        """Get the data as a single dataframe."""
         # concatenate files and save to tmp folder
-        concatenate_files(self.input_filepaths, tpm_save_path)
+        concatenate_files(self.input_filepaths, self.tpm_save_path)
         # get data
-        df = self.logfile_to_df(path=tpm_save_path, interval=None)
+        df = self.logfile_to_df(path=self.tpm_save_path, interval=None)
         df["ts"] = str_to_datetime(df["ts_str"])
         df = df.drop(columns="ts_str")
         return df
@@ -61,10 +68,10 @@ class Data:
         return n_lines, start_timestamps
     
     def logfile_to_df(self, path: str, interval: Optional[tuple]=None):
-        """Get a list of match dictionaries from log data."""
+        """Get a dataframe from a single log file."""
         # for faster repeated data ingestion save df to .h5 file
         h5_label = "-".join([p.split("/")[-1] for p in self.input_filepaths])
-        h5_filename = f"{h5_label}_{self.parser_name}.h5" # add number of instances
+        h5_filename = f"{h5_label}_{self.parser_name}.h5"
         parsed_data_dir = "tmp/data_parsed/"
         if not os.path.exists(parsed_data_dir):
             os.makedirs(parsed_data_dir)
