@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from typing import Optional
 
-from utils import *
+from utils.utils import *
 from Parser import Parser
 
 class Data:
