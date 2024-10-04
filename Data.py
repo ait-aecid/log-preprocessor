@@ -25,26 +25,17 @@ class Data:
         self.parser = Parser(parser_name, default_timestamp_paths)
         self.default_timestamp_paths = default_timestamp_paths
         self.tpm_save_path = tpm_save_path
-        self.input_filepaths = self.get_input_filepaths(ordered=True)
+        self.input_filepaths = self._get_input_filepaths(ordered=True)
 
     def get_labels(): #TO-DO
         return
-    
-    def get_input_filepaths(self, ordered=False):
-        """Return input filespaths."""
-        root, dirs, files = list(os.walk(self.data_dir))[0]
-        if ordered:
-            n_lines, start_timestamps = self.get_logfiles_info_from_dir()
-            files = list(dict(sorted(start_timestamps.items(), key=lambda x: x[1])).keys()) # sort files
-        self.input_filepaths = [os.path.join(self.data_dir, file) for file in files]
-        return self.input_filepaths
     
     def get_df(self) -> pd.DataFrame:
         """Get the data as a single dataframe."""
         # concatenate files and save to tmp folder
         concatenate_files(self.input_filepaths, self.tpm_save_path)
         # get data
-        df = self.logfile_to_df(path=self.tpm_save_path, interval=None)
+        df = self._logfile_to_df(path=self.tpm_save_path, interval=None)
         df["ts"] = str_to_datetime(df["ts_str"])
         df = df.drop(columns="ts_str")
         return df
@@ -66,8 +57,17 @@ class Data:
             with open(path, "r") as f:
                 n_lines[file] = sum(1 for _ in f) # get number of lines for offset
         return n_lines, start_timestamps
+
+    def _get_input_filepaths(self, ordered=False):
+        """Return input filespaths."""
+        root, dirs, files = list(os.walk(self.data_dir))[0]
+        if ordered:
+            n_lines, start_timestamps = self.get_logfiles_info_from_dir()
+            files = list(dict(sorted(start_timestamps.items(), key=lambda x: x[1])).keys()) # sort files
+        self.input_filepaths = [os.path.join(self.data_dir, file) for file in files]
+        return self.input_filepaths
     
-    def logfile_to_df(self, path: str, interval: Optional[tuple]=None):
+    def _logfile_to_df(self, path: str, interval: Optional[tuple]=None):
         """Get a dataframe from a single log file."""
         # for faster repeated data ingestion save df to .h5 file
         h5_label = "-".join([p.split("/")[-1] for p in self.input_filepaths])
