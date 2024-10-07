@@ -35,20 +35,19 @@ class Data:
     def get_df(self, use_parsed_data=True) -> pd.DataFrame:
         """Get the data as a single dataframe."""
         concatenate_files(self.input_filepaths, self.tmp_save_path) # concat files and save to tmp folder
-        # for faster repeated data usage save parsed df to .h5 file
-        if use_parsed_data:
-            h5_label = "-".join([p.split("/")[-1] for p in self.input_filepaths])
-            h5_filename = f"{h5_label}_{self.parser_name}.h5"
+        if use_parsed_data: # for faster repeated data usage save parsed df
+            filestorage_label = "-".join([p.split("/")[-1] for p in self.input_filepaths])
+            filestorage_name = f"{filestorage_label}_{self.parser_name}.feather"
             os.makedirs(self.parsed_data_dir, exist_ok=True)
-            parsed_data_path = os.path.join(self.parsed_data_dir, h5_filename)
+            parsed_data_path = os.path.join(self.parsed_data_dir, filestorage_name)
             root, dirs, files = list(os.walk(self.parsed_data_dir))[0]
-            if h5_filename in files: # get parsed file
-                df = pd.read_hdf(parsed_data_path, 'df')
-                print("Got parsed data from .h5 file.")
+            if filestorage_name in files: # get parsed file
+                df = pd.read_feather(parsed_data_path)
+                print("Retrieved previously parsed data.")
             else:
                 df = self.parser.parse_file(self.tmp_save_path, None, True, "ts")
-                df.to_hdf(parsed_data_path, key='df', mode='w') 
-                print("Saving parsed data to .h5 file.")
+                df.to_feather(parsed_data_path)
+                print("Saving parsed data.")
         else: # parse file
             df = self.parser.parse_file(self.tmp_save_path, None, True, "ts")
         return df
