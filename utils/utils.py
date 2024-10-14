@@ -19,8 +19,8 @@ def str_to_datetime(ts: Union[pd.Series, str]):
     """Converts str timestamps to datetime object."""
     for ts_format in POSSIBLE_TIMESTAMP_FORMATS:
         try:
-            #return pd.to_datetime(ts_series, unit="s") # audit 
-            return pd.to_datetime(ts, format=ts_format) #apache
+            #return pd.to_datetime(ts_series, unit="s") # audit
+            return pd.to_datetime(ts, format=ts_format)
         except:
             continue
     raise ValueError("No timestamp format fits. Please, extend 'POSSIBLE_TIMESTAMP_FORMATS' with the required format.")
@@ -30,7 +30,9 @@ def decode_match_dict(match_dict: dict) -> dict:
     return dict(map(lambda item: (item[0], item[1].get_match_string().decode()), match_dict.items(),))
 
 def get_timestamp_from_decoded_match_dict(match_dict: dict, default_timestamp_paths: list):
+    """Returns the timestamp from the decoded match dict."""
     for default_timestamp_path in default_timestamp_paths:
         ts_match = match_dict.get(default_timestamp_path, None)
         if ts_match is not None:
             return ts_match
+    raise ValueError("Timestamp could not be identified.")
