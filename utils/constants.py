@@ -28,3 +28,30 @@ POSSIBLE_TIMESTAMP_FORMATS = [
     "%d-%m-%Y",                # European date format: '02-10-2023'
     "%a %b %d %H:%M:%S %Y",    # C-style asctime format: 'Mon Oct 02 14:30:59 2023'
 ]
+
+POSSIBLE_TIMESTAMP_PATHS = [
+    "/model/time",
+    "/model/@timestamp/time",
+    "/model/with_data/time",
+    "/model/type/execve/time",
+    "/model/type/proctitle/time",
+    "/model/type/syscall/time",
+    "/model/type/path/time",
+    "/model/type/login/time",
+    "/model/type/sockaddr/time",
+    "/model/type/unknown/time",
+    "/model/type/cred_refr/time",
+    "/model/type/user_start/time",
+    "/model/type/user_acct/time",
+    "/model/type/user_auth/time",
+    "/model/type/user_login/time",
+    "/model/type/cred_disp/time",
+    "/model/type/service_start/time",
+    "/model/type/service_stop/time",
+    "/model/type/user_end/time",
+    "/model/type/user_cmd/time",
+    "/model/type/cred_acq/time",
+    "/model/type/avc/time",
+    "/model/type/user_bprm_fcaps/time",
+    "/model/datetime"
+]
