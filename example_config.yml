@@ -1,0 +1,319 @@
+LearnMode: true
+LogResourceList:
+- file:///home/viktor/projects/aecid/aminer-configuration-engine/data/intranet.mannsmith.harrison.com-access.log.5
+- file:///home/viktor/projects/aecid/aminer-configuration-engine/data/intranet.mannsmith.harrison.com-access.log.4
+- file:///home/viktor/projects/aecid/aminer-configuration-engine/data/intranet.mannsmith.harrison.com-access.log.3
+- file:///home/viktor/projects/aecid/aminer-configuration-engine/data/intranet.mannsmith.harrison.com-access.log.2
+Parser:
+- id: START
+  start: true
+  type: ApacheAccessParsingModel
+  name: parser
+Input:
+  multi_source: true
+  timestamp_paths:
+  - /model/time
+  - /model/@timestamp/time
+  - /model/with_df/time
+  - /model/type/execve/time
+  - /model/type/proctitle/time
+  - /model/type/syscall/time
+  - /model/type/path/time
+  - /model/type/login/time
+  - /model/type/sockaddr/time
+  - /model/type/unknown/time
+  - /model/type/cred_refr/time
+  - /model/type/user_start/time
+  - /model/type/user_acct/time
+  - /model/type/user_auth/time
+  - /model/type/user_login/time
+  - /model/type/cred_disp/time
+  - /model/type/service_start/time
+  - /model/type/service_stop/time
+  - /model/type/user_end/time
+  - /model/type/user_cmd/time
+  - /model/type/cred_acq/time
+  - /model/type/avc/time
+  - /model/type/user_bprm_fcaps/time
+  - /model/datetime
+Analysis:
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id0
+  persistence_id: NewMatchPathValueDetector_Stable_id0
+  paths:
+  - /model/client_ip/client_ip
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id1
+  persistence_id: NewMatchPathValueDetector_Stable_id1
+  paths:
+  - /model/status_code
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id2
+  persistence_id: NewMatchPathValueDetector_Stable_id2
+  paths:
+  - /model/combined
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id3
+  persistence_id: NewMatchPathValueDetector_Stable_id3
+  paths:
+  - /model/combined/combined
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id4
+  persistence_id: NewMatchPathValueDetector_Stable_id4
+  paths:
+  - /model/combined/combined/referer
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id5
+  persistence_id: NewMatchPathValueDetector_Stable_id5
+  paths:
+  - /model/combined/combined/user_agent
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id6
+  persistence_id: NewMatchPathValueDetector_Stable_id6
+  paths:
+  - /model/fm/request/method
+  output_logline: true
+- type: NewMatchPathValueDetector
+  id: NewMatchPathValueDetector_Stable_id7
+  persistence_id: NewMatchPathValueDetector_Stable_id7
+  paths:
+  - /model/fm/request/version
+  output_logline: true
+- type: NewMatchPathValueComboDetector
+  id: NewMatchPathValueComboDetector_CoOccurrenceCombos_id0
+  persistence_id: NewMatchPathValueComboDetector_CoOccurrenceCombos_id0
+  paths:
+  - /model/client_ip/client_ip
+  - /model/combined
+  - /model/combined/combined
+  - /model/combined/combined/referer
+  - /model/combined/combined/user_agent
+  - /model/fm/request/method
+  - /model/fm/request/version
+  - /model/status_code
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id0
+  persistence_id: CharsetDetector_Stable_id0
+  paths:
+  - /model
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id1
+  persistence_id: CharsetDetector_Stable_id1
+  paths:
+  - /model/client_ip/client_ip
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id2
+  persistence_id: CharsetDetector_Stable_id2
+  paths:
+  - /model/time
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id3
+  persistence_id: CharsetDetector_Stable_id3
+  paths:
+  - /model/fm/request
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id4
+  persistence_id: CharsetDetector_Stable_id4
+  paths:
+  - /model/status_code
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id5
+  persistence_id: CharsetDetector_Stable_id5
+  paths:
+  - /model/content_size
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id6
+  persistence_id: CharsetDetector_Stable_id6
+  paths:
+  - /model/combined
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id7
+  persistence_id: CharsetDetector_Stable_id7
+  paths:
+  - /model/combined/combined
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id8
+  persistence_id: CharsetDetector_Stable_id8
+  paths:
+  - /model/combined/combined/referer
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id9
+  persistence_id: CharsetDetector_Stable_id9
+  paths:
+  - /model/combined/combined/user_agent
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id10
+  persistence_id: CharsetDetector_Stable_id10
+  paths:
+  - /model/fm/request/method
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id11
+  persistence_id: CharsetDetector_Stable_id11
+  paths:
+  - /model/fm/request/request
+  output_logline: true
+- type: CharsetDetector
+  id: CharsetDetector_Stable_id12
+  persistence_id: CharsetDetector_Stable_id12
+  paths:
+  - /model/fm/request/version
+  output_logline: true
+- type: EntropyDetector
+  id: EntropyDetector_CharacterPairProbability_id0
+  persistence_id: EntropyDetector_CharacterPairProbability_id0
+  paths:
+  - /model/status_code
+  output_logline: true
+  prob_thresh: 0.204
+- type: EntropyDetector
+  id: EntropyDetector_CharacterPairProbability_id1
+  persistence_id: EntropyDetector_CharacterPairProbability_id1
+  paths:
+  - /model/fm/request/method
+  output_logline: true
+  prob_thresh: 0.281
+- type: EntropyDetector
+  id: EntropyDetector_CharacterPairProbability_id2
+  persistence_id: EntropyDetector_CharacterPairProbability_id2
+  paths:
+  - /model/fm/request/version
+  output_logline: true
+  prob_thresh: 0.676
+- type: ValueRangeDetector
+  id: ValueRangeDetector_Stable_id0
+  persistence_id: ValueRangeDetector_Stable_id0
+  paths:
+  - /model/status_code
+  output_logline: true
+- type: ValueRangeDetector
+  id: ValueRangeDetector_Stable_id1
+  persistence_id: ValueRangeDetector_Stable_id1
+  paths:
+  - /model/content_size
+  output_logline: true
+- type: EventFrequencyDetector
+  id: EventFrequencyDetector_EventFrequencyAnalysis_id0
+  persistence_id: EventFrequencyDetector_EventFrequencyAnalysis_id0
+  constraint_list:
+  - /model
+  output_logline: true
+  window_size: 15
+  num_windows: 300
+  confidence_factor: 0.2
+  season: 84760
+  empty_window_warnings: false
+- type: EventFrequencyDetector
+  id: EventFrequencyDetector_EventFrequencyAnalysis_id1
+  persistence_id: EventFrequencyDetector_EventFrequencyAnalysis_id1
+  constraint_list:
+  - /model/client_ip/client_ip
+  output_logline: true
+  window_size: 16
+  num_windows: 300
+  confidence_factor: 0.2
+  season: 84760
+  empty_window_warnings: false
+- type: EventFrequencyDetector
+  id: EventFrequencyDetector_EventFrequencyAnalysis_id2
+  persistence_id: EventFrequencyDetector_EventFrequencyAnalysis_id2
+  constraint_list:
+  - /model/fm/request
+  output_logline: true
+  window_size: 15
+  num_windows: 300
+  confidence_factor: 0.2
+  season: 84760
+  empty_window_warnings: false
+- type: EventFrequencyDetector
+  id: EventFrequencyDetector_EventFrequencyAnalysis_id3
+  persistence_id: EventFrequencyDetector_EventFrequencyAnalysis_id3
+  constraint_list:
+  - /model/client_ip/localhost
+  output_logline: true
+  window_size: 135
+  num_windows: 300
+  confidence_factor: 0.2
+  season: 84100
+  empty_window_warnings: false
+- type: EventFrequencyDetector
+  id: EventFrequencyDetector_EventFrequencyAnalysis_id4
+  persistence_id: EventFrequencyDetector_EventFrequencyAnalysis_id4
+  constraint_list:
+  - /model/fm/dash
+  output_logline: true
+  window_size: 766
+  num_windows: 300
+  confidence_factor: 0.2
+  season: 83560
+  empty_window_warnings: false
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id0
+  persistence_id: EventSequenceDetector_Stable_id0
+  paths:
+  - /model/client_ip/client_ip
+  output_logline: true
+  seq_len: 3
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id1
+  persistence_id: EventSequenceDetector_Stable_id1
+  paths:
+  - /model/status_code
+  output_logline: true
+  seq_len: 4
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id2
+  persistence_id: EventSequenceDetector_Stable_id2
+  paths:
+  - /model/combined/combined/referer
+  output_logline: true
+  seq_len: 2
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id3
+  persistence_id: EventSequenceDetector_Stable_id3
+  paths:
+  - /model/combined/combined/user_agent
+  output_logline: true
+  seq_len: 2
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id4
+  persistence_id: EventSequenceDetector_Stable_id4
+  paths:
+  - /model/fm/request/method
+  output_logline: true
+  seq_len: 3
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id5
+  persistence_id: EventSequenceDetector_Stable_id5
+  paths:
+  - /model/fm/request/version
+  output_logline: true
+  seq_len: 3
+- type: EventSequenceDetector
+  id: EventSequenceDetector_Stable_id6
+  persistence_id: EventSequenceDetector_Stable_id6
+  output_logline: true
+  seq_len: 3
+EventHandlers:
+- id: stpefile
+  type: StreamPrinterEventHandler
+  json: true
+  pretty: false
+  output_file_path: /tmp/aminer_out.json

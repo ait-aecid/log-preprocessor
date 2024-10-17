@@ -21,8 +21,8 @@ class LogData:
         self, 
         data_dir: str,
         parser_name: str,
-        tmp_save_path="/tmp/current_data.log",
-        parsed_data_dir="/tmp/data_parsed/",
+        tmp_save_path="/tmp/aminer/current_data.log",
+        parsed_data_dir="/tmp/aminer/data_parsed/",
     ):
         self.data_dir = data_dir
         self.parser_name = parser_name
