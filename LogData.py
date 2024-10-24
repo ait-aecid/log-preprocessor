@@ -1,18 +1,9 @@
 
 import os
 import pandas as pd
-from typing import Optional
-import hashlib
-
 from utils.utils import *
 from utils.constants import POSSIBLE_TIMESTAMP_PATHS
 from Parser import Parser
-
-def hash_string(input_string):
-    """Hash a string."""
-    hash_object = hashlib.sha256()
-    hash_object.update(input_string.encode('utf-8'))
-    return hash_object.hexdigest()
 
 class LogData:
     """A LogData object acts as a single representation of the provided log files (optionally including labels)."""
@@ -33,7 +24,14 @@ class LogData:
         self.input_filenames = os.listdir(self.data_dir)
         self.n_lines_per_file, self.start_timestamps = self._get_logfiles_info_from_dir()
         self.n_lines = sum(self.n_lines_per_file.values())
-        self.input_filepaths = self._get_input_filepaths() # order is crucial!!!
+        self.input_filepaths = self._get_input_filepaths() # order is crucial
+
+    def get_raw(self):
+        """Returns a series of the unparsed log lines."""
+        concatenate_files(self.input_filepaths, self.tmp_save_path) # concat files and save to tmp folder
+        with open(self.tmp_save_path, "r") as file:
+            lines = file.readlines()
+        return pd.Series(lines, name=self.tmp_save_path)
     
     def get_df(self, use_parsed_data=True) -> pd.DataFrame:
         """Get the data as a single dataframe."""

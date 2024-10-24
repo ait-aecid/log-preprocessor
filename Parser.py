@@ -13,7 +13,7 @@ from utils.utils import *
 
 class Parser:
     """Parser class for easy log parsing."""
-    def __init__(self, parser_name: str, default_timestamp_paths: Optional[list]=None):
+    def __init__(self, parser_name: str, default_timestamp_paths: list):
         self.parser_name = parser_name
         module = importlib.import_module(parser_name)
         self.parsing_model = module.get_model()
