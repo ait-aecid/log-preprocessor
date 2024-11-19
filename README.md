@@ -3,7 +3,12 @@
 This project is about preprocessing log lines in order to allow efficient and effective data analysis.
 
 ## **Installation**
-Please install the [logdata-anomaly-miner](https://github.com/ait-aecid/logdata-anomaly-miner) (AMiner) since the Log-Preprocessor utilizes its parsers.
+Please install the [logdata-anomaly-miner](https://github.com/ait-aecid/logdata-anomaly-miner) (AMiner) first.
+
+Next you can simply clone the repository from git:
+```
+git clone https://github.com/ait-aecid/log-preprocessor
+```
 
 ## **Usage:**
 
