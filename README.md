@@ -2,6 +2,9 @@
 
 This project is about preprocessing log lines in order to allow efficient and effective data analysis.
 
+## **Installation**
+Please install the [logdata-anomaly-miner](https://github.com/ait-aecid/logdata-anomaly-miner) (AMiner) since the Log-Preprocessor utilizes its parsers.
+
 ## **Usage:**
 
 A small example for how to use the **LogData** class from [LogData.py](LogData.py) is given in [example.ipynb](example.ipynb). The LogData class solely requires the parser name and the path to the folder containing the data as input parameters.
